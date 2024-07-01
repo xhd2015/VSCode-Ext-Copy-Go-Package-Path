@@ -1,9 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as child_process from "child_process"
-import { stat } from "fs/promises"
-import { dirname } from "path"
+import { getPkgPath } from './goinfo';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -23,50 +21,21 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function copyGoPackagePath(uri: vscode.Uri) {
-	// The code you place here will be executed every time your command is executed
-	// Display a message box to the user
-	const workDir = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath || ''
-	if (!workDir) {
-		vscode.window.showWarningMessage('workspace not open');
+	// console.log("uri:", uri)
+	let uriPath = uri?.path
+	if (!uriPath) {
 		return
 	}
-
-	let relPath = uri?.path
-	if (!relPath) {
-		return
+	const idx = uriPath.indexOf("://")
+	if (idx >= 0) {
+		uriPath = uriPath.slice(idx + "://".length)
 	}
-	if (!relPath?.startsWith?.(workDir)) {
-		vscode.window.showWarningMessage('selected file not in current workspace');
-		return
-	}
-	relPath = relPath.slice(workDir.length)
-	if (relPath.startsWith("/")) {
-		relPath = relPath.slice(1)
-	}
-	const getGoModPath = () => {
-		return new Promise((resolve, reject) => {
-			child_process.exec("go mod edit -json", {
-				cwd: workDir,
-			}, (err, stdout) => {
-				if (err) {
-					reject(new Error('run go mod edit -json:' + err.message))
-					return
-				}
-				const goMod = JSON.parse(stdout)
-				resolve(goMod.Module?.Path)
-			})
-		})
-	}
-	const fn = async function () {
-		console.log("sthi2")
-		const goModPath = await getGoModPath()
-		const fileStat = await stat(uri.path)
-		if (!fileStat.isDirectory()) {
-			relPath = dirname(relPath)
+	getPkgPath(uriPath).then(pkgPath => {
+		if (!pkgPath) {
+			return
 		}
-		vscode.env.clipboard.writeText(goModPath + "/" + relPath);
-	}
-	fn().catch(e => {
+		vscode.env.clipboard.writeText(pkgPath)
+	}).catch(e => {
 		vscode.window.showWarningMessage(e.message);
 	})
 }
