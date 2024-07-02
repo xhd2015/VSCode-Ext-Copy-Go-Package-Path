@@ -14,7 +14,7 @@ export async function getPkgPath(file: string): Promise<string | undefined> {
     }
     const vendorDir = path.join(absGoModDir, "vendor")
     const vendorStat = await fs.stat(vendorDir).catch(e => null)
-    if (vendorStat != null && vendorStat.isDirectory()) {
+    if (vendorStat != null && vendorStat.isDirectory() && absDir.startsWith(vendorDir)) {
         // file under vendor
         return path.relative(vendorDir, absDir)
     }

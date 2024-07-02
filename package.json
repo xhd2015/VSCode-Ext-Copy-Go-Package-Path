@@ -4,7 +4,7 @@
   "description": "copy go package path of a folder in a go project",
   "publisher": "xhd2015",
   "repository": "https://github.com/xhd2015/VSCode-Ext-Copy-Go-Package-Path",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.83.0"
   },

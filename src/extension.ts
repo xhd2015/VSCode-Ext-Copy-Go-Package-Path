@@ -30,6 +30,7 @@ function copyGoPackagePath(uri: vscode.Uri) {
 	if (idx >= 0) {
 		uriPath = uriPath.slice(idx + "://".length)
 	}
+	// console.log("uriPath:", uri)
 	getPkgPath(uriPath).then(pkgPath => {
 		if (!pkgPath) {
 			return
