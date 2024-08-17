@@ -1,25 +1,16 @@
 # About
-Automatically copy go package path
+Automatically copy go package path via file or directory
 
-Installation for VSCode: https://marketplace.visualstudio.com/items?itemName=xhd2015.copy-go-package-path
+# Usage
+1. Right click on any file or directory inside your go project,
 
-# Debug
-Copy everything in vscode-init to .vscode, then Press 'F5'.
+2. Select 'Go: Copy Go Package Path',
 
-# Pack the extension
-Pack the whole extension: https://code.visualstudio.com/api/working-with-extensions/publishing-extension
-```bash
-# this command will generate the file:
-#   some-0.0.1.vsix
-vsce package
-```
+3. The package path of the selected file or directory will be copied to clipboard, you can paste it anywhere.
 
-# Publish the extesion
-See https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+# Demo
+Step 1: copy
+<img width="394" alt="image" src="https://github.com/golang/vscode-go/assets/14964938/8e8d85a5-4674-4d44-b1da-71bd45a85280">
 
-```sh
-npm install -g @vscode/vsce
-vsce package
-vsce login <publisher> # need input token
-vsce publish
-```
+Step 2: paste
+<img width="766" alt="image" src="https://github.com/golang/vscode-go/assets/14964938/a2624dfe-db99-45ca-b527-2503a15909d6">
